@@ -1,5 +1,6 @@
 import { useEffect,useRef } from "react";
-
+import {motion} from "framer-motion";
+import ReactDOM from "react-dom";
 export default function MousePointer() {
 
     const leftPupilRef = useRef(null);
@@ -30,13 +31,13 @@ export default function MousePointer() {
     }, []);
   
     return (
-      <div className="eyes-container">
+      <motion.div className="eyes-container" drag>
         <div className="eye">
           <div className="pupil" ref={leftPupilRef}></div>
         </div>
         <div className="eye">
           <div className="pupil" ref={rightPupilRef}></div>
         </div>
-      </div>
+      </motion.div>
     );
 }
