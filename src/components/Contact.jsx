@@ -1,6 +1,5 @@
 import { FaLinkedin,FaGithub,FaInstagramSquare,FaArrowUp } from "react-icons/fa"
 import { SiGmail } from "react-icons/si";
-import './button.css'
 export default function Contact() {
 
     const icons=[
