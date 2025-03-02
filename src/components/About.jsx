@@ -56,7 +56,7 @@ export default function About() {
 
                 </div>
                 <div className="resume">
-                <a href="https://resume-bucket-manish.s3.ap-south-1.amazonaws.com/Manish+Resume+latest.pdf">
+                <a href="https://drive.google.com/file/d/1HyutxhvZoYusTKHF6YgMgVFZxtoJolmu/view?usp=sharing">
                         <motion.div className="resume-box"
                             
                             whileHover={{translateY:-10}}

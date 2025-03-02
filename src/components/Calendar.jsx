@@ -5,27 +5,22 @@ export default function Calendar({theme}){
     const chartsTheme=theme=="light"?"dark":"light"
     
     const selectLastHalfYear = contributions => {
-        const currentYear = new Date().getFullYear();
-        const currentMonth = new Date().getMonth();
-        const shownMonths = 6;
-      
-        return contributions.filter(activity => {
-          const date = new Date(activity.date);
-          const monthOfDay = date.getMonth();
-      
-          return (
-            date.getFullYear() === currentYear &&
-            monthOfDay > currentMonth - shownMonths &&
-            monthOfDay <= currentMonth
-          );
-        });
-      };
+      const currentDate = new Date();
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
+  
+      return contributions.filter(activity => {
+          const activityDate = new Date(activity.date);
+          return activityDate >= sixMonthsAgo && activityDate <= currentDate;
+      });
+  };
+  
 
     return(
         <>
           <div className='charts'>
             <div className='github-calendar'>
-                <h2>Github Submissions</h2>
+                <h2>Public Github Submissions</h2>
                 <GitHubCalendar username='Lonewolf230'
                     transformData={selectLastHalfYear}
                     colorScheme={chartsTheme}/>
