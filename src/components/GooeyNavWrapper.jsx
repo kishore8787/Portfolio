@@ -16,6 +16,11 @@ const GooeyNavWrapper = () => {
       href: "#projects",
       icon: <Folder className="w-5 h-5" /> 
     },
+    {
+      label: "Skills",
+      href: "#skills",
+      icon: <Settings className="w-5 h-5" />,
+    },
     { 
       label: "Contact",
       href: "#contact",
@@ -26,11 +31,7 @@ const GooeyNavWrapper = () => {
       href: "https://drive.google.com/file/d/1HyutxhvZoYusTKHF6YgMgVFZxtoJolmu/view?usp=drive_link",
       icon: <FileText className="w-5 h-5" />,
     },
-    {
-      label: "Skills",
-      href: "#Skills",
-      icon: <Settings className="w-5 h-5" />,
-    },
+
   ];
 
   const handleMobileClick = (index) => {
@@ -41,7 +42,7 @@ const GooeyNavWrapper = () => {
   return (
     <>
       {/* Sticky Navbar with proper spacing */}
-      <div className="sticky top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-gray-800">
+      <div className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-gray-800 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Desktop Navigation (Centered Icons + Text) */}
           <div className="hidden sm:block py-3">
