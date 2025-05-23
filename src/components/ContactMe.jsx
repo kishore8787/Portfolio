@@ -18,6 +18,12 @@ const ContactForm = () => {
     });
   };
 
+  const encode = (data) => {
+    return Object.keys(data)
+      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .join("&");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -28,10 +34,10 @@ const ContactForm = () => {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: new URLSearchParams({
+        body: encode({
           'form-name': 'contact',
           ...formData
-        }).toString()
+        })
       });
 
       if (response.ok) {
@@ -47,6 +53,11 @@ const ContactForm = () => {
 
   return (
     <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/10 hover:border-white/20 transition-all duration-300">
+      {/* <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+        <input type="text" name="name" />
+        <input type="email" name="email" />
+        <textarea name="message"></textarea>
+      </form> */}
       {isSubmitted ? (
         <div className="text-center py-8">
           <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
@@ -60,7 +71,7 @@ const ContactForm = () => {
           </button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} name='contact' netlify netlify-honeypot="bot-field" className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label htmlFor="name" className="text-white font-medium">
