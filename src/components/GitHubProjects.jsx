@@ -17,7 +17,6 @@ const GitHubProjects = () => {
   }, []);
 
   useEffect(() => {
-    // Stagger project animations
     if (repos.length > 0) {
       setVisibleProjects([]);
       repos.forEach((_, index) => {
@@ -43,7 +42,6 @@ const GitHubProjects = () => {
         throw new Error('GitHub username not configured');
       }
 
-      // Fetch pinned repositories using GraphQL
       const pinnedQuery = {
         query: `
           {
@@ -121,7 +119,6 @@ const GitHubProjects = () => {
         }
       }
 
-      // Fetch all repositories via REST API
       const headers = {
         'Accept': 'application/vnd.github.v3+json',
       };
@@ -141,7 +138,6 @@ const GitHubProjects = () => {
 
       const allReposData = await reposResponse.json();
       
-      // Enhanced filtering for all repos
       const filteredAllRepos = allReposData
         .filter(repo => !repo.fork && !repo.private && !repo.archived)
         .map(repo => ({
@@ -149,7 +145,6 @@ const GitHubProjects = () => {
           isPinned: pinnedRepoNames.includes(repo.name)
         }))
         .sort((a, b) => {
-          // Sort: pinned first, then by stars, then by update date
           if (a.isPinned && !b.isPinned) return -1;
           if (!a.isPinned && b.isPinned) return 1;
           if (b.stargazers_count !== a.stargazers_count) {
@@ -160,14 +155,12 @@ const GitHubProjects = () => {
 
       setAllRepos(filteredAllRepos);
 
-      // Use GraphQL data for pinned repos if available, otherwise filter from REST API
       const finalPinnedRepos = pinnedReposData.length > 0 
         ? pinnedReposData 
         : filteredAllRepos.filter(repo => pinnedRepoNames.includes(repo.name));
 
       setPinnedRepos(finalPinnedRepos);
       
-      // Set initial display based on current state
       setRepos(showAll ? filteredAllRepos : finalPinnedRepos);
 
     } catch (err) {
@@ -243,14 +236,13 @@ const GitHubProjects = () => {
 
   return (
     <div className="mt-12 sm:mt-16 md:mt-20 w-full">
-      {/* Header with controls */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-4">
           <h2 className="text-white font-bold text-center" style={{fontSize: "clamp(2rem, 5vw, 4rem)"}}>
             <Code className="inline-block w-8 h-8 sm:w-12 sm:h-12 mr-2 sm:mr-4 text-cyan-300" />
             My Projects
           </h2>
-          <button
+          {/* <button
             onClick={handleRefresh}
             disabled={refreshing}
             className={`
@@ -261,7 +253,7 @@ const GitHubProjects = () => {
             title="Refresh projects"
           >
             <RefreshCcw size={16} />
-          </button>
+          </button> */}
         </div>
 
         <button
@@ -331,14 +323,12 @@ const GitHubProjects = () => {
                 onMouseEnter={() => setHoveredProject(index)}
                 onMouseLeave={() => setHoveredProject(null)}
               >
-                {/* Pinned indicator */}
                 {repo.isPinned && (
                   <div className="absolute top-4 right-4">
                     <Pin className="w-5 h-5 text-yellow-400 animate-pulse" />
                   </div>
                 )}
 
-                {/* Header with title and live demo */}
                 <div className="flex items-start justify-between mb-3 pr-8">
                   <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-cyan-300 transition-colors flex-1">
                     <a 
@@ -363,12 +353,10 @@ const GitHubProjects = () => {
                   )}
                 </div>
 
-                {/* Description */}
                 <p className="text-white/80 text-sm mb-4 line-clamp-3 flex-1">
                   {repo.description || 'No description provided'}
                 </p>
 
-                {/* Language indicator */}
                 {repo.language && (
                   <div className="flex items-center gap-2 mb-4">
                     <div 
@@ -379,7 +367,6 @@ const GitHubProjects = () => {
                   </div>
                 )}
 
-                {/* Topics */}
                 {repo.topics && repo.topics.length > 0 && (
                   <div className="flex flex-wrap gap-1 mb-4">
                     {repo.topics.slice(0, 4).map((topic) => (
@@ -398,7 +385,6 @@ const GitHubProjects = () => {
                   </div>
                 )}
 
-                {/* Stats and date */}
                 <div className="flex items-center justify-between text-sm text-white/60 mb-4 mt-auto">
                   <div className="flex items-center gap-4">
                     <span className="flex items-center gap-1">
@@ -415,7 +401,6 @@ const GitHubProjects = () => {
                   </span>
                 </div>
 
-                {/* Action buttons */}
                 <div className="flex gap-3">
                   <a
                     href={repo.html_url}
@@ -441,14 +426,12 @@ const GitHubProjects = () => {
                   )}
                 </div>
 
-                {/* Hover glow effect */}
                 <div className={`
                   absolute inset-0 rounded-xl transition-opacity duration-300 pointer-events-none
                   ${isHovered ? 'opacity-10' : 'opacity-0'}
                   bg-gradient-to-br from-cyan-400 to-blue-600
                 `} />
 
-                {/* Floating particles on hover */}
                 {isHovered && (
                   <>
                     {[...Array(4)].map((_, i) => (
@@ -471,14 +454,12 @@ const GitHubProjects = () => {
         </div>
       )}
 
-      {/* Loading indicator for refresh */}
       {refreshing && (
         <div className="text-center mt-6">
           <p className="text-cyan-300 text-sm">Refreshing projects...</p>
         </div>
       )}
 
-      {/* Empty state */}
       {!loading && !error && repos.length === 0 && (
         <div className="text-center text-white/60">
           <p className="mb-4">No projects found</p>

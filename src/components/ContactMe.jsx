@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Send, CheckCircle, Github, Linkedin, Twitter } from 'lucide-react';
+import { Mail, Send, CheckCircle, Github, Linkedin, Twitter,Instagram, InstagramIcon } from 'lucide-react';
+import { SiDiscord } from "react-icons/si";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -21,20 +22,16 @@ const ContactForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // FormSubmit endpoint - replace with your email
-    const formSubmitEndpoint = 'https://formsubmit.co/manish2306j@gmail.com';
-
     try {
-      const response = await fetch(formSubmitEndpoint, {
+      const response = await fetch('/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: JSON.stringify({
-          ...formData,
-          _subject: `New contact from ${formData.name}`,
-          _captcha: 'false'
-        })
+        body: new URLSearchParams({
+          'form-name': 'contact',
+          ...formData
+        }).toString()
       });
 
       if (response.ok) {
@@ -63,7 +60,7 @@ const ContactForm = () => {
           </button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} name='contact' netlify netlify-honeypot="bot-field" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label htmlFor="name" className="text-white font-medium">
@@ -121,30 +118,31 @@ const ContactForm = () => {
             ) : (
               <>
                 <Send className="w-5 h-5" />
-                <span>Send Message</span>
+                <span >Send Message</span>
               </>
             )}
           </button>
+          <input type="hidden" name="form-name" value="contact" />
+
         </form>
       )}
     </div>
   );
 };
 
-// Main Contact Section Component
 const ContactMe = () => {
   const socialLinks = [
-    { icon: Github, href: 'https://github.com/yourusername', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://linkedin.com/in/yourusername', label: 'LinkedIn' },
+    { icon: Github, href: 'https://github.com/Lonewolf230', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://linkedin.com/in/manish-r-2934132b8', label: 'LinkedIn' },
+    {icon:InstagramIcon,href:"https://www.instagram.com/manish2306j?igsh=MXNlMDh3NXI2MTR5cw%3D%3D&utm_source=qr",label:"Instagram"},
+    { icon: SiDiscord, href: 'https://discord.com/users/manish23_', label: 'Discord' },
   ];
 
   return (
     <div className="min-h-screen bg-black text-white">
 
-      {/* Contact Section */}
       <div id="contact" className="min-h-screen py-12 md:py-20 px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="max-w-6xl mx-auto">
-          {/* Header */}
           <div className="text-center mb-12 md:mb-16">
             <div className="inline-flex items-center space-x-3 mb-6">
               <Mail className="w-8 h-8 text-cyan-300" />
@@ -165,7 +163,7 @@ const ContactMe = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             {/* Left side - Contact info and social */}
             <div className="space-y-8">
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/10">
+              {/* <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/10">
                 <h3 className="text-2xl font-bold text-white mb-6">Get in Touch</h3>
                 <div className="space-y-4">
                   <div className="flex items-center space-x-4">
@@ -178,7 +176,7 @@ const ContactMe = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* Social Links */}
               <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/10">

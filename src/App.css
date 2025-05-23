@@ -2,3 +2,8 @@ body{
   background-color: black;
   font-family: 'Poppins', sans-serif;
 }
+
+html{
+    scroll-padding-top: 80px;
+    scroll-behavior: smooth;
+}

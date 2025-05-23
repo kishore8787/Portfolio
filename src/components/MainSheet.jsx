@@ -2,17 +2,15 @@ import GlitchText from "../comps/GlitchText/GlitchText";
 import ClickSpark from "../comps/ClickSpark/ClickSpark";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import RotatingText from "../comps/RotatingText/RotatingText";
-import GooeyNavWrapper from "./GooeyNavWrapper";
 import SkillsDisplay from "./SkillsDisplay";
 import GitHubProjects from "./GitHubProjects";
 import ContactMe from "./ContactMe";
-// import ProjectsDisplay from "./ProjectsDisplay";
+import NavbarWrapper from "./NavWrapper";
 
 export default function MainSheet() {
   return (
     <div className="relative h-screen w-full">
-      <GooeyNavWrapper />
-      {/* Content overlay */}
+      <NavbarWrapper />
       <div className="relative z-10 h-full flex flex-col justify-center px-4 sm:px-8 md:px-16 lg:px-24">
         <ClickSpark
           sparkSize={15}
@@ -21,7 +19,6 @@ export default function MainSheet() {
           easing="ease-out"
           sparkColor="yellow"
         >
-          {/* Introduction section */}
           <div id="about" className="mt-8">
             <div className="flex flex-wrap items-center mb-8 sm:mb-12">
               <p
@@ -40,9 +37,7 @@ export default function MainSheet() {
               </GlitchText>
             </div>
 
-            {/* Lottie + About section in row */}
             <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12 w-full">
-              {/* Larger Lottie animation - left side */}
               <div className="w-[250px] h-[250px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px] flex-shrink-0">
                 <DotLottieReact
                   src="https://lottie.host/c7a8e2c6-c800-4b6d-98a2-6eb130454417/btfoWVB4FN.lottie"
@@ -87,7 +82,6 @@ export default function MainSheet() {
               </div>
             </div>
           </div>
-          {/* <ProjectsDisplay/> */}
           <div id="projects">
             <GitHubProjects />
           </div>
