@@ -62,7 +62,7 @@ const ContactForm = () => {
         <div className="text-center py-8">
           <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
           <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
-          <p className="text-gray-300">Thanks for reaching out. I'll get back to you soon!</p>
+          <p className="text-gray-300">Thanks for reaching out. I'll get back to you dont ya wry!</p>
           <button
             onClick={() => setIsSubmitted(false)}
             className="mt-4 text-cyan-300 hover:text-cyan-200 transition-colors"
@@ -143,10 +143,10 @@ const ContactForm = () => {
 
 const ContactMe = () => {
   const socialLinks = [
-    { icon: Github, href: 'https://github.com/Lonewolf230', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://linkedin.com/in/manish-r-2934132b8', label: 'LinkedIn' },
-    {icon:InstagramIcon,href:"https://www.instagram.com/manish2306j?igsh=MXNlMDh3NXI2MTR5cw%3D%3D&utm_source=qr",label:"Instagram"},
-    { icon: SiDiscord, href: 'https://discord.com/users/manish23_', label: 'Discord' },
+    { icon: Github, href: 'https://github.com/kishore8787', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/kishore-g-24ba37200/', label: 'LinkedIn' },
+    {icon:InstagramIcon,href:"https://www.instagram.com/kishore3__/",label:"Instagram"},
+    { icon: SiDiscord, href: 'https://discord.com/users/kishore4859', label: 'Discord' },
   ];
 
   return (
@@ -165,8 +165,8 @@ const ContactMe = () => {
               </h2>
             </div>
             <p className="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-3xl mx-auto">
-              Have a project in mind or just want to chat about tech? 
-              I'd love to hear from you. Let's build something amazing together!
+              Have a project in mind or just want to chat about data analytics? 
+              I'd like to hear from you. Let's build something cool together!
             </p>
           </div>
 
@@ -211,7 +211,7 @@ const ContactMe = () => {
               {/* Fun fact */}
               <div className="bg-gradient-to-r from-yellow-400/10 to-cyan-300/10 rounded-2xl p-6 md:p-8 border border-yellow-400/20">
                 <p className="text-lg text-white/90 italic">
-                  "I typically respond within 24 hours. Coffee chats and code reviews are always welcome! ☕"
+                  "I typically respond within 20 hours. Tea chats and project reviews are always welcome! ☕"
                 </p>
               </div>
             </div>

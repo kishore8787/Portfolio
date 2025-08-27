@@ -33,7 +33,7 @@ export default function MainSheet() {
                 enableOnHover={true}
                 className="custom-class"
               >
-                Manish
+                Kishore
               </GlitchText>
             </div>
 
@@ -50,22 +50,16 @@ export default function MainSheet() {
               {/* About text - right side */}
               <div className="flex-1 mt-6 lg:mt-0">
                 <p className="text-xl sm:text-2xl md:text-3xl leading-snug text-white lg leading-loose font-bold">
-                  A passionate Full Stack Web Developer with a strong focus on
-                  backend development who thrives on building clean, scalable
-                  solutions, from crafting intuitive UIs to architecting
-                  powerful backends. I'm also deeply immersed in Flutter for
-                  cross-platform mobile experiences and constantly exploring the
-                  exciting world of Machine Learning. I'm always looking for new
-                  ways to bring ideas to life through code.
+                  Hi there! I'm a final-year Computer Science student passionate about full-stack development, problem-solving, and creating real-world tech solutions. I specialize in building applications using the MERN stack and have also explored the exciting fields of artificial intelligence and machine learning through hands-on projects and training. Over time, I’ve developed strong skills in designing user-friendly web applications, working with APIs, and analyzing data to solve practical challenges. Beyond academics, I enjoy collaborating on creative projects, participating in technical communities, and continuously exploring emerging technologies to grow as a developer and innovator.
                   <br />
                   <span>Outside of work, you’ll find me</span>
                   <RotatingText
                     texts={[
-                      "listening to music",
-                      "watching sitcoms",
-                      "gaming with friends",
-                      "playing cricket matches",
-                      "exploring new backend architectures",
+                      "listening to RNB music",
+                      "watching tarantino movies",
+                      "gaming with friends on mobile",
+                      "watching CSK cricket matches",
+                      "exploring data analytics projects",
                     ]}
                     mainClassName="inline-block px-2 sm:px-3 md:px-4 bg-cyan-300 text-black overflow-hidden py-1 sm:py-1.5 md:py-2 justify-center rounded-lg w-fit mx-1"
                     staggerFrom={"last"}
@@ -77,7 +71,7 @@ export default function MainSheet() {
                     transition={{ type: "spring", damping: 30, stiffness: 400 }}
                     rotationInterval={2000}
                   />
-                  — always chasing creativity, both in and out of code.
+                  — always chasing creativity, both in and out of project.
                 </p>
               </div>
             </div>

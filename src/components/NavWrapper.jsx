@@ -27,7 +27,7 @@ const NavbarWrapper = () => {
     },
     {
       label: "Resume",
-      href: "https://drive.google.com/file/d/1HyutxhvZoYusTKHF6YgMgVFZxtoJolmu/view?usp=drive_link",
+      href: "https://drive.google.com/file/d/1Y3cq0ELhwI2lHwbmKOfjgWk3VHhRbygY/view?usp=sharing",
       icon: <FileText className="w-5 h-5" />,
     },
   ];
