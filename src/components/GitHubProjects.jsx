@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Code, Star, GitFork, Globe, Pin, ExternalLink, RefreshCcw, Eye } from 'lucide-react';
+import { Code, Star, GitFork, Globe, Pin, ExternalLink, Eye } from 'lucide-react';
 
 const GitHubProjects = () => {
   const [repos, setRepos] = useState([]);
@@ -11,6 +11,9 @@ const GitHubProjects = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [visibleProjects, setVisibleProjects] = useState([]);
   const [hoveredProject, setHoveredProject] = useState(null);
+
+  const username = "kishore8787";
+  const token = import.meta.env.VITE_GITHUB_TOKEN;
 
   useEffect(() => {
     fetchGitHubData();
@@ -29,19 +32,11 @@ const GitHubProjects = () => {
 
   const fetchGitHubData = async (forceRefresh = false) => {
     try {
-      if (forceRefresh) {
-        setRefreshing(true);
-      }
+      if (forceRefresh) setRefreshing(true);
       setLoading(true);
       setError(null);
 
-      const username = "kishore8787";
-
-      const token =  import.meta.env.VITE_GITHUB_TOKEN;
-
-      if (!username) {
-        throw new Error('GitHub username not configured');
-      }
+      if (!username) throw new Error('GitHub username not configured');
 
       const pinnedQuery = {
         query: `
@@ -94,8 +89,12 @@ const GitHubProjects = () => {
           });
 
           const pinnedData = await pinnedResponse.json();
-          
-          if (pinnedData.data?.user?.pinnedItems?.nodes) {
+          console.log("Pinned Data:", pinnedData);
+
+          if (pinnedData.errors) {
+            console.error('GraphQL Errors:', pinnedData.errors);
+            setError("Unable to fetch pinned projects");
+          } else if (pinnedData.data?.user?.pinnedItems?.nodes?.length > 0) {
             pinnedReposData = pinnedData.data.user.pinnedItems.nodes.map(node => ({
               id: node.name,
               name: node.name,
@@ -114,31 +113,33 @@ const GitHubProjects = () => {
               isPinned: true
             }));
             pinnedRepoNames = pinnedReposData.map(repo => repo.name);
+            setPinnedRepos(pinnedReposData);
+          } else {
+            console.warn("No pinned repositories found");
+            setPinnedRepos([]);
           }
         } catch (graphqlError) {
-          console.warn('GraphQL query failed, falling back to REST API:', graphqlError);
+          console.warn('GraphQL query failed:', graphqlError);
+          setError("Failed to load pinned projects");
+          setPinnedRepos([]);
         }
       }
 
       const headers = {
         'Accept': 'application/vnd.github.v3+json',
       };
-      
-      if (token) {
-        headers['Authorization'] = `token ${token}`;
-      }
+
+      if (token) headers['Authorization'] = `token ${token}`;
 
       const reposResponse = await fetch(
         `https://api.github.com/users/${username}/repos?sort=updated&per_page=100&type=owner`,
         { headers }
       );
 
-      if (!reposResponse.ok) {
-        throw new Error(`GitHub API error: ${reposResponse.status}`);
-      }
+      if (!reposResponse.ok) throw new Error(`GitHub API error: ${reposResponse.status}`);
 
       const allReposData = await reposResponse.json();
-      
+
       const filteredAllRepos = allReposData
         .filter(repo => !repo.fork && !repo.private && !repo.archived)
         .map(repo => ({
@@ -156,17 +157,22 @@ const GitHubProjects = () => {
 
       setAllRepos(filteredAllRepos);
 
-      const finalPinnedRepos = pinnedReposData.length > 0 
-        ? pinnedReposData 
+      const finalPinnedRepos = pinnedReposData.length > 0
+        ? pinnedReposData
         : filteredAllRepos.filter(repo => pinnedRepoNames.includes(repo.name));
 
-      setPinnedRepos(finalPinnedRepos);
-      
-      setRepos(showAll ? filteredAllRepos : finalPinnedRepos);
+      if (finalPinnedRepos.length === 0) {
+        // If no pinned repos, show all repos by default
+        setRepos(filteredAllRepos);
+      } else {
+        setRepos(showAll ? filteredAllRepos : finalPinnedRepos);
+      }
 
     } catch (err) {
       console.error('Error fetching GitHub data:', err);
       setError(err.message);
+      setPinnedRepos([]);
+      setRepos([]);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -177,10 +183,6 @@ const GitHubProjects = () => {
     const newShowAll = !showAll;
     setShowAll(newShowAll);
     setRepos(newShowAll ? allRepos : pinnedRepos);
-  };
-
-  const handleRefresh = () => {
-    fetchGitHubData(true);
   };
 
   const formatProjectName = (name) => {
@@ -224,7 +226,7 @@ const GitHubProjects = () => {
   if (loading && repos.length === 0) {
     return (
       <div className="mt-12 sm:mt-16 md:mt-20 w-full">
-        <h2 className="text-white font-bold text-center mb-8" style={{fontSize: "clamp(2rem, 5vw, 4rem)"}}>
+        <h2 className="text-white font-bold text-center mb-8" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
           My Projects
         </h2>
         <div className="flex flex-col items-center gap-4">
@@ -237,24 +239,13 @@ const GitHubProjects = () => {
 
   return (
     <div className="mt-12 sm:mt-16 md:mt-20 w-full">
+      {/* Header and toggle */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-4">
-          <h2 className="text-white font-bold text-center" style={{fontSize: "clamp(2rem, 5vw, 4rem)"}}>
+          <h2 className="text-white font-bold text-center" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
             <Code className="inline-block w-8 h-8 sm:w-12 sm:h-12 mr-2 sm:mr-4 text-cyan-300" />
             My Projects
           </h2>
-          {/* <button
-            onClick={handleRefresh}
-            disabled={refreshing}
-            className={`
-              p-2 sm:p-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20
-              transition-all duration-300 text-white/80 hover:text-cyan-300
-              ${refreshing ? 'animate-spin' : 'hover:scale-110'}
-            `}
-            title="Refresh projects"
-          >
-            <RefreshCcw size={16} />
-          </button> */}
         </div>
 
         <button
@@ -262,8 +253,8 @@ const GitHubProjects = () => {
           className={`
             flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium
             transition-all duration-300 text-sm sm:text-base
-            ${showAll 
-              ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 hover:bg-yellow-500/30' 
+            ${showAll
+              ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 hover:bg-yellow-500/30'
               : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/30'
             }
           `}
@@ -294,8 +285,7 @@ const GitHubProjects = () => {
           <p className="text-red-400 mb-4">{error}</p>
           <button
             onClick={() => fetchGitHubData(true)}
-            className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-300 
-                       transition-colors text-sm font-medium"
+            className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-300 transition-colors text-sm font-medium"
           >
             Try Again
           </button>
@@ -307,7 +297,7 @@ const GitHubProjects = () => {
           {repos.map((repo, index) => {
             const isVisible = visibleProjects.includes(index);
             const isHovered = hoveredProject === index;
-            
+
             return (
               <div
                 key={repo.id}
@@ -332,9 +322,9 @@ const GitHubProjects = () => {
 
                 <div className="flex items-start justify-between mb-3 pr-8">
                   <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-cyan-300 transition-colors flex-1">
-                    <a 
-                      href={repo.html_url} 
-                      target="_blank" 
+                    <a
+                      href={repo.html_url}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="hover:text-cyan-300 transition-colors line-clamp-2"
                     >
@@ -342,7 +332,7 @@ const GitHubProjects = () => {
                     </a>
                   </h3>
                   {repo.homepage && (
-                    <a 
+                    <a
                       href={repo.homepage.startsWith('http') ? repo.homepage : `https://${repo.homepage}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -360,7 +350,7 @@ const GitHubProjects = () => {
 
                 {repo.language && (
                   <div className="flex items-center gap-2 mb-4">
-                    <div 
+                    <div
                       className="w-3 h-3 rounded-full"
                       style={{ backgroundColor: repo.language_color || getLanguageColor(repo.language) }}
                     />
@@ -407,8 +397,7 @@ const GitHubProjects = () => {
                     href={repo.html_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 
-                               rounded-lg transition-colors text-white text-sm font-medium flex-1 justify-center"
+                    className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-white text-sm font-medium flex-1 justify-center"
                   >
                     <Code className="w-4 h-4" />
                     Code
@@ -418,8 +407,7 @@ const GitHubProjects = () => {
                       href={repo.homepage.startsWith('http') ? repo.homepage : `https://${repo.homepage}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 bg-cyan-500/20 hover:bg-cyan-500/30 
-                                 rounded-lg transition-colors text-cyan-300 text-sm font-medium flex-1 justify-center"
+                      className="flex items-center gap-2 px-4 py-2 bg-cyan-500/20 hover:bg-cyan-500/30 rounded-lg transition-colors text-cyan-300 text-sm font-medium flex-1 justify-center"
                     >
                       <ExternalLink className="w-4 h-4" />
                       Live
