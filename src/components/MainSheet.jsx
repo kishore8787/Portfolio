@@ -50,7 +50,7 @@ export default function MainSheet() {
               {/* About text - right side */}
               <div className="flex-1 mt-6 lg:mt-0">
                 <p className="text-xl sm:text-2xl md:text-3xl leading-snug text-white lg leading-loose font-bold">
-                  Hi there! I'm a final-year Computer Science student passionate about full-stack development, problem-solving, and creating real-world tech solutions. I specialize in building applications using the MERN stack and have also explored the exciting fields of artificial intelligence and machine learning through hands-on projects and training. Over time, I’ve developed strong skills in designing user-friendly web applications, working with APIs, and analyzing data to solve practical challenges. Beyond academics, I enjoy collaborating on creative projects, participating in technical communities, and continuously exploring emerging technologies to grow as a developer and innovator.
+                Hi there! I'm a final-year Computer Science student passionate about full-stack development, problem-solving, and building real-world tech solutions. I enjoy working with the MERN stack, exploring AI/ML trends, and turning ideas into impactful applications. Beyond coding, I love collaborating on creative projects and continuously learning emerging technologies to stay ahead in the tech world. 🚀
                   <br />
                   <span>Outside of work, you’ll find me</span>
                   <RotatingText

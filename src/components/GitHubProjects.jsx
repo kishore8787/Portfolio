@@ -35,7 +35,8 @@ const GitHubProjects = () => {
       setLoading(true);
       setError(null);
 
-      const username = import.meta.env.VITE_GITHUB_USERNAME;
+      const username = "kishore8787";
+
       const token =  import.meta.env.VITE_GITHUB_TOKEN;
 
       if (!username) {
